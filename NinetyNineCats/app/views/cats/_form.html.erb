@@ -1,0 +1,69 @@
+<% action_url = @cat.persisted? ? cat_url(@cat) : cats_url %>
+<% submit_text = @cat.persisted? ? "Update Cat!" : "Create Cat!" %>
+<% description_prefill = @cat.persisted? ? @cat.description : "My cat is..." %>
+
+<html>
+<form action=<%= action_url %> method="POST">
+  <% if @cat.persisted? %>
+    <input type="hidden" name="_method" value="PATCH">
+  <% end %>
+  <!--name -->
+  <p>
+    <label for="cat_name">Name</label>
+    <input
+    id="cat_name"
+    name="cat[name]"
+    value="<%= @cat.name %>">
+  </p>
+
+  <!--birth_date-->
+  <p>
+    <label for="cat_birth_date">Birthday</label>
+    <input
+    type= "date"
+    id="cat_birth_date"
+    name="cat[birth_date]"
+    value= <%=@cat.birth_date%>>
+  </p>
+
+  <!--color-->
+  <p>
+    <label for="cat_color">Color</label>
+    <select name="cat[color]" id="cat_color">
+      <option value="blank" selected>choose a color</option>
+      <% Cat::COLOR_OPTIONS.each do |color_option| %>
+        <option value="<%=color_option%>"
+          <%="selected" if @cat.color == color_option%>>
+            <%=color_option.capitalize%></option>
+      <% end %>
+    </select>
+  </p>
+
+  <!--sex-->
+  <p>
+    <input type="radio"
+      name="cat[sex]"
+      id= "cat_sex_female"
+      value="F"
+      <%="checked" if @cat.sex == "F"%>>
+    <label for="cat_sex_female">Female</label>
+
+    <input type="radio"
+      name="cat[sex]"
+      id= "cat_sex_male"
+      value="M"
+      <%="checked" if @cat.sex == "M"%>>
+    <label for="cat_sex_male">Male</label>
+  </p>
+
+  <!--description-->
+  <p>
+    <label for="cat_description">Description</label></br>
+    <textarea name="cat[description]" id="cat_description"><%=description_prefill%>
+    </textarea>
+  </p>
+
+  <!--submit-->
+  <input type= "submit" value=<%=submit_text%>>
+</form>
+</html>

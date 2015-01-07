@@ -1,0 +1,17 @@
+<h1>Request for <%= @crr.cat.name %></h1>
+
+<table>
+  <tr>
+    <th>Attribute</th>
+    <th>Value</th>
+  </tr>
+  <% @crr.attributes.each do |(attr, value)| %>
+  <tr>
+    <td><%= attr %></td>
+    <td><%= value %></td>
+  </tr>
+  <% end %>
+</table>
+
+<a href= "<%= edit_cat_url(@crr.cat) %>">Edit this cat</a>
+<a href= "<%= new_cat_rental_request_url %>">Request a cat now!</a>

@@ -1,4 +1,6 @@
 class CatRentalRequestsController < ApplicationController
+  before_action :current_user_owns_cat, only: [:approve, :deny]
+
   def new
     @cats = Cat.all
     render :new
@@ -6,6 +8,7 @@ class CatRentalRequestsController < ApplicationController
 
   def create
     @crr = CatRentalRequest.new(crr_params)
+    @crr.user_id = current_user.id
 
     if @crr.save
       flash.notice = "Rental request for cat \"#{Cat.find(@crr.cat_id).name}\" created!"
@@ -47,5 +50,14 @@ class CatRentalRequestsController < ApplicationController
   def crr_params
     params.require(:cat_rental_request)
       .permit(:cat_id, :start_date, :end_date, :status)
+  end
+
+  def current_user_owns_cat
+    @crr = CatRentalRequest.find(params[:id])
+    @cat = @crr.cat
+
+    unless @cat.user_id == current_user.id
+      redirect_to cat_url(@cat)
+    end
   end
 end

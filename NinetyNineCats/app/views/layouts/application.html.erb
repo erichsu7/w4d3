@@ -7,6 +7,13 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <% if current_user %>
+    <h1>Welcome, <%= current_user.user_name.capitalize %>! </h1><%= button_to "Logout", session_url, method: :delete %>
+  <% else %>
+    <h1><%= button_to "Sign Up For 99Cats!!!!!", new_user_url, method: :get %>
+      <%= button_to "Login", new_session_url, method: :get %></h1>
+  <% end %>
+
 
 <p class="flash"><%= flash.notice %></p>
 <%= yield %>

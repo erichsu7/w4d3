@@ -16,27 +16,33 @@
 <h3>Existing Requests</h3>
 <table>
   <tr>
-    <th>Req Id</th>
+    <th>Username</th>
     <th>Start Date</th>
     <th>End Date</th>
     <th>Status</th>
+    <% if @cat.user_id == current_user.id %>
     <th>Approve</th>
     <th>Deny</th>
+    <% end %>
   </tr>
   <% @crrs.each do |crr| %>
   <tr>
-    <td><%= crr.id %></td>
+    <td><%= crr.requester.user_name %></td>
     <td><%= crr.start_date %></td>
     <td><%= crr.end_date %></td>
     <td><%= crr.status %></td>
-    <% if crr.status == "PENDING" %><td>
-      <%= button_to "Approve", approve_cat_rental_request_url(crr), method: :post %>
-      </td>
-    <td><%= button_to "Deny", deny_cat_rental_request_url(crr), method: :post %></td><%end%>
+    <% if @cat.user_id == current_user.id %>
+      <% if crr.status == "PENDING" %><td>
+        <%= button_to "Approve", approve_cat_rental_request_url(crr), method: :post %>
+        </td>
+      <td><%= button_to "Deny", deny_cat_rental_request_url(crr), method: :post %></td>
+      <%end%>
+      <%end %>
   </tr>
   <% end %>
 </table>
-
+<% if @cat.user_id == current_user.id %>
 <p><a href="<%=edit_cat_url(@cat) %>">Edit this cat</a></p>
+<%end%>
 <p><a href="<%=new_cat_rental_request_url %>">Request a cat now!</a></p>
 <p><a href="<%=cats_url%>">Back to cats index</a></p>

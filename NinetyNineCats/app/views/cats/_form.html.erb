@@ -4,6 +4,7 @@
 
 <html>
 <form action=<%= action_url %> method="POST">
+  <%= form_auth_token %>
   <% if @cat.persisted? %>
     <input type="hidden" name="_method" value="PATCH">
   <% end %>

@@ -1,13 +1,18 @@
 class Cat < ActiveRecord::Base
   COLOR_OPTIONS = %w(white grey black tabby brown cream buff red calico)
 
-  validates :birth_date, :color, :name, :sex, presence: true
+  validates :birth_date, :color, :name, :sex, :user_id, presence: true
   validates :color, inclusion:
     { in: COLOR_OPTIONS,
     message: "choose a valid color" } # %{value} WTF? str intrp vs. erb??
   validates :sex, inclusion: { in: %w(M F) }
 
   has_many :cat_rental_requests, :dependent => :destroy
+
+  belongs_to :owner,
+    class_name: 'User',
+    foreign_key: :user_id
+
 
   def age
     now = Time.now.utc.to_date
